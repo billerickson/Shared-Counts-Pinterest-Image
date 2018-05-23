@@ -45,7 +45,7 @@
 			 // Send the attachment URL to our custom input field via jQuery.
 			 $setting.find( 'input[type=text]' ).val( media_attachment.url );
 			 $setting.find( 'img' ).remove();
-			 $setting.prepend( '<img src="'+media_attachment.url+'">' );
+			 $setting.prepend( '<img src="'+media_attachment.url+'" style="max-width: 100%; height: auto;">' );
 		 });
 
 		 // Now that everything has been set, let's open up the frame.
