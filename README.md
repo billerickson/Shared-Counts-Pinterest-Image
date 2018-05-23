@@ -26,7 +26,27 @@ This plugin will only work if [Shared Counts](https://wordpress.org/plugins/shar
 3. When editing a post, use the "Pinterest Sharing Image" metabox in the sidebar (see screenshot).
 
 ## Customization ##
-For details on this please see [the wiki](https://github.com/billerickson/Shared-Counts-Pinterest-Image/wiki/).
+
+By default the Pinterest Sharing Image box is only added to posts, but you can use a filter to add support for other post types.
+
+The following code will add the box to pages. Add it to your theme's functions.php file or a [Core Functionality plugin](https://www.billerickson.net/core-functionality-plugin/).
+
+```php
+/**
+ * Pinterest Sharing Image on pages
+ *
+ * @author Bill Erickson
+ * @see https://github.com/billerickson/Shared-Counts-Pinterest-Image
+ *
+ * @param array $post_types
+ * @return array
+ */
+function be_pinterest_image_on_pages( $post_types ) {
+	$post_types[] = 'page';
+	return $post_types;
+}
+add_filter( 'shared_counts_pinterest_image_post_types', 'be_pinterest_image_on_pages' );
+```
 
 ## Bugs ##
 If you find an bug or problem, please let us know by [creating an issue](https://github.com/billerickson/Shared-Counts-Pinterest-Image/issues?state=open).
