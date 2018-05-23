@@ -3,7 +3,8 @@
  * Plugin Name: Shared Counts - Pinterest Image
  * Plugin URI:  https://wordpress.org/plugins/shared-counts-pinterest-image/
  * Description: Use a separate image for sharing on Pinterest
- * Author:      Bill Erickson & Jared Atchison
+ * Author:      Bill Erickson
+ * Author URI:  https://www.billerickson.net
  * Version:     1.0.0
  *
  * Shared Counts - Pinterest Image is free software: you can redistribute it and/or modify
@@ -20,7 +21,7 @@
  * along with Shared Counts. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package    SharedCountsPinterestImage
- * @author     Bill Erickson & Jared Atchison
+ * @author     Bill Erickson
  * @since      1.0.0
  * @license    GPL-2.0+
  * @copyright  Copyright (c) 2017
