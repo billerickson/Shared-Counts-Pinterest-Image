@@ -124,7 +124,7 @@ class Shared_Counts_Pinterest_Image {
 		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
 
 		// Image
-		$image_url = get_post_meta( get_the_ID(), $this->meta_key, true );
+		$image_url = esc_url_raw( get_post_meta( get_the_ID(), $this->meta_key, true ) );
 		$image = !empty( $image_url ) ? '<img src="' . $image_url . '" style="max-width: 100%; height: auto;" />' : '';
 
 		// Links
