@@ -73,9 +73,13 @@ class Shared_Counts_Pinterest_Image {
 		// Translations
 		load_plugin_textdomain( 'shared-counts-pinterest-image', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+		// Metabox
 		add_action( 'admin_enqueue_scripts',	array( $this, 'scripts'          )         );
 		add_action( 'add_meta_boxes',			array( $this, 'metabox_register' )         );
 		add_action( 'save_post',				array( $this, 'metabox_save'     ),  1, 2  );
+
+		// Shared Counts integration
+		add_filter( 'shared_counts_single_image', array( $this, 'pinterest_image'  ), 10, 3  );
 
 	}
 
@@ -177,6 +181,23 @@ class Shared_Counts_Pinterest_Image {
 
 		// Good to go!
 		return true;
+	}
+
+	/**
+	 * Pinterest Image
+	 *
+	 * @since 1.0.0
+	 */
+	function pinterest_image( $image_url, $id, $link ) {
+
+		if( 'pinterest' != $link['type'] )
+			return $image_url;
+
+		$pinterest_image = get_post_meta( $id, $this->meta_key, true );
+		if( !empty( $pinterest_image ) )
+			$image_url = $pinterest_image;
+
+		return $image_url;
 	}
 
 }
