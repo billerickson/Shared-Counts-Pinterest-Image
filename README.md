@@ -18,8 +18,7 @@ This plugin will only work if [Shared Counts](https://wordpress.org/plugins/shar
 
 ## Screenshot ##
 
-![screenshot](https://d3vv6lp55qjaqc.cloudfront.net/items/1Q2y2Y2M3z0d0A3K3r0I/Screen%20Shot%202018-05-23%20at%2011.26.30%20AM.png?X-CloudApp-Visitor-Id=62fe8f264d77e04f553532f39036a9d7&v=0a7bd956 =306x520)
-
+<img width="306" alt="screenshot" src="https://user-images.githubusercontent.com/685131/40438104-cebfb6e6-5e7c-11e8-8d30-bc11e268ebf7.png">
 
 ## Installation ##
 1. Download the plugin [from GitHub.](https://github.com/billerickson/Shared-Counts-Pinterest-Image/archive/master.zip) or from [WordPress.org](https://wordpress.org/plugins/shared-counts-pinterest-image/).
