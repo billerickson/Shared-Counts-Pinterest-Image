@@ -6,10 +6,15 @@
 	 * Bind upload/select image button.
 	 */
 	$( document ).on( 'click', '.shared-counts-pinterest-image-setting button', function( event ) {
-
 		event.preventDefault();
-
 		imageUploadModal( $( this ) );
+		toggleLinks( $( this ) );
+	});
+
+	$( document ).on( 'click', '.shared-counts-pinterest-image-setting a', function( event ) {
+		event.preventDefault();
+		removeImage( $( this ) );
+		toggleLinks( $( this ) );
 	});
 
 
@@ -50,6 +55,24 @@
 
 		 // Now that everything has been set, let's open up the frame.
 		 media_modal.open();
+	};
+
+	/**
+	 * Remove Image
+	 */
+	function removeImage( el ) {
+		var $setting = $( el ).closest( '.shared-counts-pinterest-image-setting' );
+		 $setting.find( 'input[type=text]' ).val( '' );
+		 $setting.find( 'img' ).remove();
+	}
+
+	/**
+	 * Toggle links
+	 */
+	function toggleLinks( el ) {
+		var $setting = $( el ).closest( '.shared-counts-pinterest-image-setting' );
+		$setting.find( 'button' ).toggle();
+		$setting.find( 'a' ).toggle();
 	};
 
 })( jQuery );

@@ -124,16 +124,25 @@ class Shared_Counts_Pinterest_Image {
 		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
 
 		// Image
-		$image = get_post_meta( get_the_ID(), $this->meta_key, true );
+		$image_url = get_post_meta( get_the_ID(), $this->meta_key, true );
+		$image = !empty( $image_url ) ? '<img src="' . $image_url . '" style="max-width: 100%; height: auto;" />' : '';
 
+		// Links
+		$link_format = empty( $image ) ? '<button class="button">%s</button><a href="#" style="display: none;">%s</a>' : '<button class="button" style="display: none;">%s</button><a href="#">%s</a>';
 
 		echo '<div class="shared-counts-pinterest-image-setting">';
 
-		echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">
-				<img src="' . $image . '" style="max-width: 100%; height: auto;">
-				<input type="text" name="' . $this->meta_key . '" value="' . $image . '" style="display: none;">
-				<button class="button">Select Image</button>
-			</div>';
+			echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">';
+				echo $image;
+				echo '<input type="text" name="' . $this->meta_key . '" value="' . $image_url . '" style="display: none;">';
+
+				printf(
+					$link_format,
+					__( 'Select Image', 'shared-counts-pinterest-image' ),
+					__( 'Remove Image', 'shared-counts-pinterest-image' )
+				);
+
+			echo '</div>';
 
 		echo '</div>';
 
