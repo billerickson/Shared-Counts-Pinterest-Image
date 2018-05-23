@@ -70,9 +70,6 @@ class Shared_Counts_Pinterest_Image {
 	 */
 	function init() {
 
-		// Translations
-		load_plugin_textdomain( 'shared-counts-pinterest-image', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
 		// Metabox
 		add_action( 'admin_enqueue_scripts',	array( $this, 'scripts'          )         );
 		add_action( 'add_meta_boxes',			array( $this, 'metabox_register' )         );
