@@ -106,7 +106,7 @@ class Shared_Counts_Pinterest_Image {
 
 		$post_types = apply_filters( 'shared_counts_pinterest_image_post_types', array( 'post' ) );
 		foreach( $post_types as $post_type ) {
-			add_meta_box( 'shared-counts-pinterest-image', 'Pinterest Sharing Image', array( $this, 'metabox_render' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'shared-counts-pinterest-image', 'Pinterest Sharing Image', array( $this, 'metabox_render' ), $post_type, 'side', 'low' );
 		}
 	}
 
@@ -130,8 +130,8 @@ class Shared_Counts_Pinterest_Image {
 		echo '<div class="shared-counts-pinterest-image-setting">';
 
 		echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">
-				<img src="' . $image . '" style="max-width: 150px; height: auto; float: left; margin-right: 16px;">
-				<input type="text" name="' . $this->meta_key . '" value="' . $image . '" style="width: 50%;">
+				<img src="' . $image . '" style="max-width: 100%; height: auto;">
+				<input type="text" name="' . $this->meta_key . '" value="' . $image . '" style="display: none;">
 				<button class="button">Select Image</button>
 			</div>';
 
