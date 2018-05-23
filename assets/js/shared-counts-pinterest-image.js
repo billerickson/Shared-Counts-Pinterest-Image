@@ -16,7 +16,7 @@
 	/**
 	 * Image upload modal window.
 	 */
-	imageUploadModal: function( el ) {
+	function imageUploadModal( el ) {
 
 		 if ( media_modal ) {
 			 media_modal.open();
@@ -50,6 +50,6 @@
 
 		 // Now that everything has been set, let's open up the frame.
 		 media_modal.open();
-	},
+	};
 
 })( jQuery );
