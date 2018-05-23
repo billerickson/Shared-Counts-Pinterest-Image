@@ -34,6 +34,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Shared_Counts_Pinterest_Image {
 
 	/**
+	 * Meta Key
+	 *
+	 * @since 1.0.0
+	 */
+	private $meta_key = 'shared_counts_pinterest_image';
+
+	/**
+	 * Nonce Value
+	 *
+	 * @since 1.0.0
+	 */
+	private $nonce = 'shared_counts_pinterest_image_nonce';
+
+	/**
 	 * Primary constructor.
 	 *
 	 * @since 1.0.0
@@ -45,12 +59,100 @@ class Shared_Counts_Pinterest_Image {
 	/**
 	 * Initialize the plugin.
 	 *
+	 * @since 1.0.0
 	 */
 	function init() {
 
 		// Translations
 		load_plugin_textdomain( 'shared-counts-pinterest-image', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+		add_action( 'add_meta_boxes', array( $this, 'metabox_register' )         );
+		add_action( 'save_post',      array( $this, 'metabox_save'     ),  1, 2  );
+
+	}
+
+	/**
+	 * Register Metabox
+	 *
+	 * @since 1.0.0
+	 */
+	function metabox_register() {
+
+		// Make sure Shared Counts is active
+		if( ! function_exists( 'shared_counts' ) )
+			return;
+
+		$post_types = apply_filters( 'shared_counts_pinterest_image_post_types', array( 'post' ) );
+		foreach( $post_types as $post_type ) {
+			add_meta_box( 'shared-counts-pinterest-image', 'Shared Counts - Pinterest Image', array( $this, 'metabox_render' ), $post_type, 'normal', 'high' );
+		}
+	}
+
+	/**
+	 * Render Metabox
+	 *
+	 * @since 1.0.0
+	 */
+	function metabox_render() {
+
+		// Security nonce
+		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
+
+
+		echo '<div class="shared-counts-pinterest-image-setting">';
+		printf( '<label for="' . $this->meta_key . '">%s</label>', __( 'Pinterest Sharing Image (if blank, it uses the post\'s featured image)', 'shared-counts-pinterest-image' ) );
+
+		echo '<span class="shared-counts-pinterest-image-setting-field">
+				<img src="">
+				<input type="text" name="' . $this->meta_key . '" value="">
+				<button class="button">Upload Image</button>
+			</span>';
+
+	}
+
+	/**
+	 * Save Metabox
+	 *
+	 * @since 1.0.0
+	 */
+	function metabox_save( $post_id, $post ) {
+
+		if( ! $this->user_can_save( $post_id, $this->nonce ) )
+			return;
+
+		update_post_meta( $post_id, $this->meta_key, esc_url_raw( $_POST[ $this->meta_key] ) );
+	}
+
+	/**
+	 * User can save metabox
+	 *
+	 * @since 1.0.0
+	 */
+	function user_can_save( $post_id, $nonce ) {
+
+		// Security check
+		if ( ! isset( $_POST[ $nonce ] ) || ! wp_verify_nonce( $_POST[ $nonce ], plugin_basename( __FILE__ ) ) ) {
+			return false;
+		}
+
+		// Bail out if running an autosave, ajax, cron.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return false;
+		}
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return false;
+		}
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			return false;
+		}
+
+		// Bail out if the user doesn't have the correct permissions to edit the post
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return false;
+		}
+
+		// Good to go!
+		return true;
 	}
 
 }
