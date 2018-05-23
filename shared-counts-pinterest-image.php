@@ -106,7 +106,7 @@ class Shared_Counts_Pinterest_Image {
 
 		$post_types = apply_filters( 'shared_counts_pinterest_image_post_types', array( 'post' ) );
 		foreach( $post_types as $post_type ) {
-			add_meta_box( 'shared-counts-pinterest-image', 'Shared Counts - Pinterest Image', array( $this, 'metabox_render' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'shared-counts-pinterest-image', 'Pinterest Sharing Image', array( $this, 'metabox_render' ), $post_type, 'normal', 'high' );
 		}
 	}
 
@@ -123,16 +123,17 @@ class Shared_Counts_Pinterest_Image {
 		// Security nonce
 		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
 
+		// Image
+		$image = get_post_meta( get_the_ID(), $this->meta_key, true );
+
 
 		echo '<div class="shared-counts-pinterest-image-setting">';
-		printf( '<h3><label for="' . $this->meta_key . '">%s</label></h3>', __( 'Pinterest Sharing Image', 'shared-counts-pinterest-image' ) );
-		printf( '<p>%s</p>', __( 'If blank, the post\'s featured image is used.', 'shared-counts-pinterest-image' ) );
 
-		echo '<span class="shared-counts-pinterest-image-setting-field">
-				<img src="">
-				<input type="text" name="' . $this->meta_key . '" value="">
-				<button class="button">Upload Image</button>
-			</span>';
+		echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">
+				<img src="' . $image . '" style="max-width: 150px; height: auto; float: left; margin-right: 16px;">
+				<input type="text" name="' . $this->meta_key . '" value="' . $image . '" style="width: 50%;">
+				<button class="button">Select Image</button>
+			</div>';
 
 		echo '</div>';
 
