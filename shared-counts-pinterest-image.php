@@ -34,6 +34,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Shared_Counts_Pinterest_Image {
 
 	/**
+	 * Plugin Veresion
+	 *
+	 * @since 1.0.0
+	 */
+	private $plugin_version = '1.0.0';
+
+	/**
 	 * Meta Key
 	 *
 	 * @since 1.0.0
@@ -66,9 +73,20 @@ class Shared_Counts_Pinterest_Image {
 		// Translations
 		load_plugin_textdomain( 'shared-counts-pinterest-image', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-		add_action( 'add_meta_boxes', array( $this, 'metabox_register' )         );
-		add_action( 'save_post',      array( $this, 'metabox_save'     ),  1, 2  );
+		add_action( 'admin_enqueue_scripts',	array( $this, 'scripts'          )         );
+		add_action( 'add_meta_boxes',			array( $this, 'metabox_register' )         );
+		add_action( 'save_post',				array( $this, 'metabox_save'     ),  1, 2  );
 
+	}
+
+	/**
+	 * Register Scripts
+	 *
+	 * @since 1.0.0
+	 */
+	function scripts() {
+
+		wp_register_script( 'shared-counts-pinterest-image', plugins_url( 'assets/js/shared-counts-pinterest-image.js', __FILE__ ), array( 'jquery' ), $this->plugin_version, true );
 	}
 
 	/**
@@ -95,18 +113,24 @@ class Shared_Counts_Pinterest_Image {
 	 */
 	function metabox_render() {
 
+		// Load assets
+		wp_enqueue_script( 'shared-counts-pinterest-image' );
+
 		// Security nonce
 		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
 
 
 		echo '<div class="shared-counts-pinterest-image-setting">';
-		printf( '<label for="' . $this->meta_key . '">%s</label>', __( 'Pinterest Sharing Image (if blank, it uses the post\'s featured image)', 'shared-counts-pinterest-image' ) );
+		printf( '<h3><label for="' . $this->meta_key . '">%s</label></h3>', __( 'Pinterest Sharing Image', 'shared-counts-pinterest-image' ) );
+		printf( '<p>%s</p>', __( 'If blank, the post\'s featured image is used.', 'shared-counts-pinterest-image' ) );
 
 		echo '<span class="shared-counts-pinterest-image-setting-field">
 				<img src="">
 				<input type="text" name="' . $this->meta_key . '" value="">
 				<button class="button">Upload Image</button>
 			</span>';
+
+		echo '</div>';
 
 	}
 
@@ -156,3 +180,4 @@ class Shared_Counts_Pinterest_Image {
 	}
 
 }
+new Shared_Counts_Pinterest_Image;
