@@ -5,7 +5,7 @@
  * Description: Use a separate image for sharing on Pinterest
  * Author:      Bill Erickson
  * Author URI:  https://www.billerickson.net
- * Version:     1.0.0
+ * Version:     1.1.0
  *
  * Shared Counts - Pinterest Image is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

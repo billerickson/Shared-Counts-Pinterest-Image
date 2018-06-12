@@ -3,7 +3,7 @@ Contributors: billerickson
 Tags: sharing, pinterest, image, sharing, social sharing, share buttons, social buttons, share counts, social
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,5 +43,9 @@ Contributions are welcome!
 1. Backend metabox for specifying Pinterest image
 
 == Changelog ==
+
+**Version 1.1.0**
+- Added support for custom description.
+
 **Version 1.0.0**
 - Initial release.
