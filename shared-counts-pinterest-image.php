@@ -78,6 +78,7 @@ class Shared_Counts_Pinterest_Image {
 
 		// Shared Counts integration
 		add_filter( 'shared_counts_single_image', array( $this, 'pinterest_image'  ), 10, 3  );
+		add_filter( 'shared_counts_link',         array( $this, 'pinterest_desc'   ), 10, 3 );
 
 	}
 
@@ -140,6 +141,8 @@ class Shared_Counts_Pinterest_Image {
 					__( 'Remove Image', 'shared-counts-pinterest-image' )
 				);
 
+				echo '<p><label for="' . $this->meta_key . '_description">Description</label><br /><input class="widefat" type="text" name="' . $this->meta_key . '_description" value="' . get_post_meta( get_the_ID(), $this->meta_key . '_description', true ) . '" />';
+
 			echo '</div>';
 
 		echo '</div>';
@@ -157,6 +160,7 @@ class Shared_Counts_Pinterest_Image {
 			return;
 
 		update_post_meta( $post_id, $this->meta_key, esc_url_raw( $_POST[ $this->meta_key] ) );
+		update_post_meta( $post_id, $this->meta_key . '_description', esc_html( $_POST[ $this->meta_key . '_description' ] ) );
 	}
 
 	/**
@@ -206,6 +210,27 @@ class Shared_Counts_Pinterest_Image {
 			$image_url = $pinterest_image;
 
 		return $image_url;
+	}
+
+	/**
+	 * Pinterest Description
+	 *
+	 * @since 1.1.0
+	 *
+	 */
+	function pinterest_desc( $link, $id, $style ) {
+		if( 'pinterest' !== $link['type'] )
+			return $link;
+
+		$description = get_post_meta( $id, $this->meta_key . '_description', true );
+		if( empty( $description ) )
+			return $link;
+
+		$old = 'description=' . rawurlencode( wp_strip_all_tags( get_the_title( $id ) ) );
+		$new = 'description=' . rawurlencode( wp_strip_all_tags( $description ) );
+		$link['link'] = str_replace( $old, $new, $link['link'] );
+		return $link;
+
 	}
 
 }
