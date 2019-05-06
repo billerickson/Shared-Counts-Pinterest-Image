@@ -48,7 +48,7 @@
 			 var media_attachment = media_modal.state().get( 'selection' ).first().toJSON();
 
 			 // Send the attachment URL to our custom input field via jQuery.
-			 $setting.find( 'input[type=text]' ).val( media_attachment.url );
+			 $setting.find( 'input.sc-pinterest-image' ).val( media_attachment.url );
 			 $setting.find( 'img' ).remove();
 			 $setting.prepend( '<img src="'+media_attachment.url+'" style="max-width: 100%; height: auto;">' );
 		 });
@@ -62,7 +62,7 @@
 	 */
 	function removeImage( el ) {
 		var $setting = $( el ).closest( '.shared-counts-pinterest-image-setting' );
-		 $setting.find( 'input[type=text]' ).val( '' );
+		 $setting.find( 'input.sc-pinterest-image' ).val( '' );
 		 $setting.find( 'img' ).remove();
 	}
 

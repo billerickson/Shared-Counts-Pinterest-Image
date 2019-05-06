@@ -133,7 +133,7 @@ class Shared_Counts_Pinterest_Image {
 
 			echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">';
 				echo $image;
-				echo '<input type="text" name="' . $this->meta_key . '" value="' . $image_url . '" style="display: none;">';
+				echo '<input type="text" class="sc-pinterest-image" name="' . $this->meta_key . '" value="' . $image_url . '" style="display: none;">';
 
 				printf(
 					$link_format,
@@ -141,7 +141,7 @@ class Shared_Counts_Pinterest_Image {
 					__( 'Remove Image', 'shared-counts-pinterest-image' )
 				);
 
-				echo '<p><label for="' . $this->meta_key . '_description">Description</label><br /><input class="widefat" type="text" name="' . $this->meta_key . '_description" value="' . get_post_meta( get_the_ID(), $this->meta_key . '_description', true ) . '" />';
+				echo '<p><label for="' . $this->meta_key . '_description">Description</label><br /><input class="widefat" type="text" name="' . $this->meta_key . '_description" class="sc-pinterest-description" value="' . get_post_meta( get_the_ID(), $this->meta_key . '_description', true ) . '" />';
 
 			echo '</div>';
 
