@@ -80,6 +80,9 @@ class Shared_Counts_Pinterest_Image {
 		add_filter( 'shared_counts_single_image', array( $this, 'pinterest_image'  ), 10, 3  );
 		add_filter( 'shared_counts_link',         array( $this, 'pinterest_desc'   ), 10, 3 );
 
+		// Include hidden image in content, for pinterest browser extensions
+		add_filter( 'the_content', 				array( $this, 'pinterest_image_content' ) );
+
 	}
 
 	/**
@@ -229,6 +232,51 @@ class Shared_Counts_Pinterest_Image {
 		$url = explode( 'description=', $link['link'] );
 		$link['link'] = $url[0] . 'description=' . rawurlencode( wp_strip_all_tags( $description ) );
 		return $link;
+
+	}
+
+	/**
+	 * Pinterest image in content
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	function pinterest_image_content( $content ) {
+
+		if( ! ( is_singular() && function_exists( 'shared_counts' ) ) )
+			return $content;
+
+		$options = shared_counts()->admin->options();
+		if( empty( $options['post_type'] ) || ! in_array( get_post_type(), $options['post_type'] ) )
+			return $content;
+
+		if( ! apply_filters( 'shared_counts_pinterest_image_content', true ) )
+			return $content;
+
+		$image_url = false;
+		$pinterest_image = get_post_meta( $id, $this->meta_key, true );
+		if( !empty( $pinterest_image ) ) {
+			$image_url = $pinterest_image;
+		} elseif( has_post_thumbnail() ) {
+			$image_url = wp_get_attachment_image_url( get_post_thumbnail_id(), 'full' );
+		} else {
+			$image = apply_filters( 'shared_counts_default_image', '', $id, array( 'type' => 'pinterest' ) );
+			if( !empty( $image ) )
+				$image_url = wp_get_attachment_image_url( intval( $image ), 'full' );
+		}
+
+		if( empty( $image_url ) )
+			return $content;
+
+		$description = get_post_meta( $id, $this->meta_key . '_description', true );
+		if( empty( $description ) )
+			$description = wp_strip_all_tags( get_the_title() );
+
+		$hidden_image = '<div class="shared-counts-hidden-image-container" style="display:none;"><img src="' . $image_url . '" data-pin-description="' . $description . '" data-pin-media="' . $image_url . '" /></div>';
+
+		return $hidden_image . $content;
 
 	}
 
