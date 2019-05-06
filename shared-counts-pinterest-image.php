@@ -226,9 +226,8 @@ class Shared_Counts_Pinterest_Image {
 		if( empty( $description ) )
 			return $link;
 
-		$old = 'description=' . str_replace( ' ', '%20', wp_strip_all_tags( get_the_title( $id ) ) );
-		$new = 'description=' . rawurlencode( wp_strip_all_tags( $description ) );
-		$link['link'] = str_replace( $old, $new, $link['link'] );
+		$url = explode( 'description=', $link['link'] );
+		$link['link'] = $url[0] . 'description=' . rawurlencode( wp_strip_all_tags( $description ) );
 		return $link;
 
 	}
