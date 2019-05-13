@@ -256,13 +256,13 @@ class Shared_Counts_Pinterest_Image {
 			return $content;
 
 		$image_url = false;
-		$pinterest_image = get_post_meta( $id, $this->meta_key, true );
+		$pinterest_image = get_post_meta( get_the_ID(), $this->meta_key, true );
 		if( !empty( $pinterest_image ) ) {
 			$image_url = $pinterest_image;
 		} elseif( has_post_thumbnail() ) {
 			$image_url = wp_get_attachment_image_url( get_post_thumbnail_id(), 'full' );
 		} else {
-			$image = apply_filters( 'shared_counts_default_image', '', $id, array( 'type' => 'pinterest' ) );
+			$image = apply_filters( 'shared_counts_default_image', '', get_the_ID(), array( 'type' => 'pinterest' ) );
 			if( !empty( $image ) )
 				$image_url = wp_get_attachment_image_url( intval( $image ), 'full' );
 		}
@@ -270,7 +270,7 @@ class Shared_Counts_Pinterest_Image {
 		if( empty( $image_url ) )
 			return $content;
 
-		$description = get_post_meta( $id, $this->meta_key . '_description', true );
+		$description = get_post_meta( get_the_ID(), $this->meta_key . '_description', true );
 		if( empty( $description ) )
 			$description = wp_strip_all_tags( get_the_title() );
 
