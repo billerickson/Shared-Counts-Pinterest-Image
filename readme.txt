@@ -2,8 +2,8 @@
 Contributors: billerickson
 Tags: sharing, pinterest, image, sharing, social sharing, share buttons, social buttons, share counts, social
 Requires at least: 4.6
-Tested up to: 5.2
-Stable tag: 1.2.0
+Tested up to: 5.5
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,10 @@ Contributions are welcome!
 1. Backend metabox for specifying Pinterest image
 
 == Changelog ==
+
+**Version 1.3.0**
+- Added filter for changing meta key, useful for retaining data from another social sharing plugin.
+- Added filter for changing image url.
 
 **Version 1.2.0**
 - Added support for Pinterest browser extension ([more information](https://github.com/billerickson/Shared-Counts-Pinterest-Image/issues/1))

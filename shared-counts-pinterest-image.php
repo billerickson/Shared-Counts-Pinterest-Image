@@ -5,7 +5,7 @@
  * Description: Use a separate image for sharing on Pinterest
  * Author:      Bill Erickson
  * Author URI:  https://www.billerickson.net
- * Version:     1.2.0
+ * Version:     1.3.0
  *
  * Shared Counts - Pinterest Image is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,14 +39,7 @@ class Shared_Counts_Pinterest_Image {
 	 *
 	 * @since 1.0.0
 	 */
-	private $plugin_version = '1.2.0';
-
-	/**
-	 * Meta Key
-	 *
-	 * @since 1.0.0
-	 */
-	private $meta_key = 'shared_counts_pinterest_image';
+	private $plugin_version = '1.3.0';
 
 	/**
 	 * Nonce Value
@@ -126,7 +119,7 @@ class Shared_Counts_Pinterest_Image {
 		wp_nonce_field( plugin_basename( __FILE__ ), $this->nonce );
 
 		// Image
-		$image_url = esc_url_raw( get_post_meta( get_the_ID(), $this->meta_key, true ) );
+		$image_url = apply_filters( 'shared_counts_pinterest_image_url', esc_url_raw( get_post_meta( get_the_ID(), $this->meta_key( 'image' ), true ) ) );
 		$image = !empty( $image_url ) ? '<img src="' . $image_url . '" style="max-width: 100%; height: auto;" />' : '';
 
 		// Links
@@ -136,7 +129,7 @@ class Shared_Counts_Pinterest_Image {
 
 			echo '<div class="shared-counts-pinterest-image-setting-field" style="overflow: hidden; width: 100%;">';
 				echo $image;
-				echo '<input type="text" class="sc-pinterest-image" name="' . $this->meta_key . '" value="' . $image_url . '" style="display: none;">';
+				echo '<input type="text" class="sc-pinterest-image" name="' . $this->meta_key( 'image' ) . '" value="' . $image_url . '" style="display: none;">';
 
 				printf(
 					$link_format,
@@ -144,7 +137,7 @@ class Shared_Counts_Pinterest_Image {
 					__( 'Remove Image', 'shared-counts-pinterest-image' )
 				);
 
-				echo '<p><label for="' . $this->meta_key . '_description">Description</label><br /><input class="widefat" type="text" name="' . $this->meta_key . '_description" class="sc-pinterest-description" value="' . get_post_meta( get_the_ID(), $this->meta_key . '_description', true ) . '" />';
+				echo '<p><label for="' . $this->meta_key( 'desc' ) . '">Description</label><br /><input class="widefat" type="text" name="' . $this->meta_key( 'desc' ) . '" class="sc-pinterest-description" value="' . get_post_meta( get_the_ID(), $this->meta_key( 'desc' ), true ) . '" />';
 
 			echo '</div>';
 
@@ -162,8 +155,8 @@ class Shared_Counts_Pinterest_Image {
 		if( ! $this->user_can_save( $post_id, $this->nonce ) )
 			return;
 
-		update_post_meta( $post_id, $this->meta_key, esc_url_raw( $_POST[ $this->meta_key] ) );
-		update_post_meta( $post_id, $this->meta_key . '_description', esc_html( $_POST[ $this->meta_key . '_description' ] ) );
+		update_post_meta( $post_id, $this->meta_key( 'image' ), esc_url_raw( $_POST[ $this->meta_key( 'image' ) ] ) );
+		update_post_meta( $post_id, $this->meta_key( 'desc' ), esc_html( $_POST[ $this->meta_key( 'desc' ) ] ) );
 	}
 
 	/**
@@ -208,7 +201,7 @@ class Shared_Counts_Pinterest_Image {
 		if( 'pinterest' != $link['type'] )
 			return $image_url;
 
-		$pinterest_image = get_post_meta( $id, $this->meta_key, true );
+		$pinterest_image = apply_filters( 'shared_counts_pinterest_image_url', get_post_meta( $id, $this->meta_key( 'image' ), true ) );
 		if( !empty( $pinterest_image ) )
 			$image_url = $pinterest_image;
 
@@ -225,7 +218,7 @@ class Shared_Counts_Pinterest_Image {
 		if( 'pinterest' !== $link['type'] )
 			return $link;
 
-		$description = get_post_meta( $id, $this->meta_key . '_description', true );
+		$description = get_post_meta( $id, $this->meta_key( 'desc' ), true );
 		if( empty( $description ) )
 			return $link;
 
@@ -256,7 +249,7 @@ class Shared_Counts_Pinterest_Image {
 			return $content;
 
 		$image_url = false;
-		$pinterest_image = get_post_meta( get_the_ID(), $this->meta_key, true );
+		$pinterest_image = get_post_meta( get_the_ID(), $this->meta_key( 'image' ), true );
 		if( !empty( $pinterest_image ) ) {
 			$image_url = $pinterest_image;
 		} elseif( has_post_thumbnail() ) {
@@ -266,11 +259,12 @@ class Shared_Counts_Pinterest_Image {
 			if( !empty( $image ) )
 				$image_url = wp_get_attachment_image_url( intval( $image ), 'full' );
 		}
+		$image_url = apply_filters( 'shared_counts_pinterest_image_url', $image_url );
 
 		if( empty( $image_url ) )
 			return $content;
 
-		$description = get_post_meta( get_the_ID(), $this->meta_key . '_description', true );
+		$description = get_post_meta( get_the_ID(), $this->meta_key( 'desc' ), true );
 		if( empty( $description ) )
 			$description = wp_strip_all_tags( get_the_title() );
 
@@ -278,6 +272,21 @@ class Shared_Counts_Pinterest_Image {
 
 		return $hidden_image . $content;
 
+	}
+
+	/**
+	 * Meta Key
+	 *
+	 */
+	function meta_key( $type = 'image' ) {
+		$key = false;
+		if( 'image' === $type ) {
+			$key = 'shared_counts_pinterest_image';
+		} elseif( 'desc' === $type ) {
+			$key = 'shared_counts_pinterest_image_description';
+		}
+
+		return apply_filters( 'shared_counts_pinterest_image_meta_key', $key, $type );
 	}
 
 }
