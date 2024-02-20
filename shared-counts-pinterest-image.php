@@ -268,7 +268,7 @@ class Shared_Counts_Pinterest_Image {
 		if( empty( $description ) )
 			$description = wp_strip_all_tags( get_the_title() );
 
-		$hidden_image = '<div class="shared-counts-hidden-image-container" style="display:none;"><img src="' . $image_url . '" data-pin-description="' . $description . '" data-pin-media="' . $image_url . '" alt="" /></div>';
+		$hidden_image = '<div class="shared-counts-hidden-image-container" style="display:none;"><img src="' . $image_url . '" class="shared-counts-hidden-image" data-pin-description="' . $description . '" data-pin-media="' . $image_url . '" alt="" /></div>';
 
 		return $hidden_image . $content;
 
